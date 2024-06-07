@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slot Machine</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f8f8;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        .slot-machine {
+            text-align: center;
+            border: 2px solid #333;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .reels {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .reel {
+            width: 100px;
+            height: 150px;
+            border: 2px solid #ccc;
+            margin: 0 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            background-color: #eee;
+            border-radius: 5px;
+            transition: transform 0.5s;
+        }
+
+        .spinning {
+            transform: rotateX(360deg);
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        #result, #saldo, #jackpot {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="slot-machine">
+        <div class="reels">
+            <div class="reel" id="reel1">🍒</div>
+            <div class="reel" id="reel2">🍋</div>
+            <div class="reel" id="reel3">🍉</div>
+        </div>
+        <button id="spin-button">Girar</button>
+        <button id="add-saldo-button">Adicionar Saldo</button>
+        <div id="result"></div>
+        <div id="saldo">Saldo: 10</div>
+        <div id="jackpot">Jackpot: 0</div>
+    </div>
+    <script>
+        let saldo = 10;
+        let jackpot = 0;
+
+        document.getElementById('spin-button').addEventListener('click', spin);
+        document.getElementById('add-saldo-button').addEventListener('click', addSaldo);
+
+        function spin() {
+            if (saldo <= 0) {
+                document.getElementById('result').textContent = 'Saldo insuficiente!';
+                return;
+            }
+
+            const symbols = ['🍒', '🍋', '🍉', '🔔', '⭐', '7️⃣'];
+            let result1 = symbols[Math.floor(Math.random() * symbols.length)];
+            let result2 = symbols[Math.floor(Math.random() * symbols.length)];
+            let result3 = symbols[Math.floor(Math.random() * symbols.length)];
+
+            animateReel('reel1', result1);
+            animateReel('reel2', result2);
+            animateReel('reel3', result3);
+
+            saldo -= 1; // Deduz 1 do saldo a cada rodada
+            jackpot += 1; // Adiciona 1 ao jackpot a cada rodada
+            document.getElementById('saldo').textContent = 'Saldo: ' + saldo;
+            document.getElementById('jackpot').textContent = 'Jackpot: ' + jackpot;
+
+            setTimeout(() => {
+                checkWin(result1, result2, result3);
+            }, 500); // Espera a animação terminar
+        }
+
+        function animateReel(reelId, result) {
+            let reel = document.getElementById(reelId);
+            reel.classList.add('spinning');
+            setTimeout(() => {
+                reel.textContent = result;
+                reel.classList.remove('spinning');
+            }, 500);
+        }
+
+        function checkWin(result1, result2, result3) {
+            let resultText = '';
+            if (result1 === result2 && result2 === result3) {
+                if (result1 === '7️⃣') {
+                    resultText = 'Jackpot! Você ganhou ' + jackpot + '!';
+                    saldo += jackpot; // Adiciona o jackpot ao saldo
+                    jackpot = 0; // Reseta o jackpot
+                    document.getElementById('jackpot').textContent = 'Jackpot: ' + jackpot;
+                } else {
+                    resultText = 'Você Ganhou!';
+                    saldo += 100; // Incrementa o saldo em 100
+                }
+            } else {
+                resultText = 'Tente novamente!';
+            }
+            document.getElementById('result').textContent = resultText;
+            document.getElementById('saldo').textContent = 'Saldo: ' + saldo;
+        }
+
+        function addSaldo() {
+            saldo += 1;
+            document.getElementById('saldo').textContent = 'Saldo: ' + saldo;
+        }
+    </script>
+</body>
+</html>
