@@ -31,4 +31,4 @@ O JavaScript é responsável por toda a lógica do jogo:
 1. **Adicionar Saldo:** Clique no botão "Adicionar Saldo" para aumentar seu saldo.
 2. **Girar os Rolos:** Clique no botão "Girar" para rodar os rolos. Cada rodada custa 1 de saldo.
 3. **Ganhe Prêmios:** Se os símbolos dos três rolos forem iguais, você ganha prêmios em saldo. Se conseguir três símbolos '7️⃣', ganha o jackpot acumulado!
-  [7️⃣7️⃣7️⃣ ](Slot.png)
+  ![Slot Machine](Slot.png)
